@@ -1,0 +1,163 @@
+
+import tkinter as tk
+import random
+
+# Main window
+root = tk.Tk()
+root.title("Happy Birthday Neha ❤️")
+root.geometry("600x700")
+root.configure(bg="#200b30")
+root.resizable(False, False)
+
+# Background canvas
+canvas = tk.Canvas(
+    root,
+    width=600,
+    height=700,
+    bg="#200b30",
+    highlightthickness=0
+)
+canvas.place(x=0, y=0)
+
+# Main content
+heart = tk.Label(
+    root,
+    text="❤️",
+    font=("Arial", 85),
+    bg="#200b30",
+    fg="#ff176b"
+)
+heart.pack(pady=(45, 0))
+
+title = tk.Label(
+    root,
+    text="Happy Birthday",
+    font=("Georgia", 30, "bold"),
+    fg="#ffb7d2",
+    bg="#200b30"
+)
+title.pack(pady=15)
+
+name = tk.Label(
+    root,
+    text="N E H A",
+    font=("Georgia", 38, "bold"),
+    fg="white",
+    bg="#200b30"
+)
+name.pack()
+
+message = tk.Label(
+    root,
+    text=(
+        "Today is all about YOU! 🌸\n"
+        "A beautiful soul deserves\n"
+        "the most beautiful happiness."
+    ),
+    font=("Georgia", 15),
+    fg="#f8d9e9",
+    bg="#200b30",
+    justify="center"
+)
+message.pack(pady=25)
+
+# Hidden surprise message
+surprise = tk.Label(
+    root,
+    text=(
+        "Dear NEHA ❤️\n\n"
+        "Thank you for being such an amazing\n"
+        "friend. Life is a little more beautiful\n"
+        "with a friend like you. 🥹\n\n"
+        "May your smile never fade,\n"
+        "your dreams come true,\n"
+        "and happiness always find you.\n\n"
+        "Keep shining, keep smiling\n"
+        "and always stay the wonderful\n"
+        "person you are! 🌷\n\n"
+        "Happy Birthday, Bestie! 🎂❤️"
+    ),
+    font=("Georgia", 12),
+    fg="#ffe0ef",
+    bg="#200b30",
+    justify="center"
+)
+
+# Floating hearts animation
+def create_heart():
+    x = random.randint(10, 580)
+    y = 700
+
+    symbols = ["❤️", "💕", "💖", "✨", "🌸"]
+    symbol = random.choice(symbols)
+
+    heart_id = canvas.create_text(
+        x, y,
+        text=symbol,
+        font=("Arial", random.randint(15, 25))
+    )
+
+    def move():
+        canvas.move(heart_id, 0, -4)
+
+        coords = canvas.coords(heart_id)
+
+        if coords and coords[1] > -30:
+            root.after(40, move)
+        else:
+            canvas.delete(heart_id)
+
+    move()
+
+    root.after(500, create_heart)
+
+
+# Heart beating animation
+beat_state = True
+
+def beat():
+    global beat_state
+
+    if beat_state:
+        heart.config(font=("Arial", 100))
+    else:
+        heart.config(font=("Arial", 85))
+
+    beat_state = not beat_state
+    root.after(500, beat)
+
+
+# Surprise button function
+def open_surprise():
+    surprise.pack(pady=10)
+    button.config(
+        text="Happy Birthday Neha! ❤️",
+        state="disabled"
+    )
+
+    for i in range(60):
+        root.after(i * 50, create_heart)
+
+
+# Button
+button = tk.Button(
+    root,
+    text="Open Your Surprise 💝",
+    font=("Arial", 14, "bold"),
+    bg="#ff176b",
+    fg="white",
+    activebackground="#ff83b2",
+    activeforeground="white",
+    relief="flat",
+    padx=25,
+    pady=12,
+    cursor="hand2",
+    command=open_surprise
+)
+button.pack(pady=20)
+
+# Start animations
+beat()
+create_heart()
+
+root.mainloop()
